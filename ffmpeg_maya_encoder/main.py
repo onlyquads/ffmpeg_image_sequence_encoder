@@ -20,6 +20,18 @@ def fix_platform_path(path):
 
     return path
     
+def show_success_popup():
+    result = cmds.confirmDialog(title="Encode Done !", message="Ffmpeg encode is now completed", button="OK", defaultButton="OK")
+    if result == "OK":
+        print("Popup closed.")
+
+def show_failed_popup():
+    result = cmds.confirmDialog(title="Encode Failed !", message="Ffmpeg encode failed", button="OK", defaultButton="OK")
+    if result == "OK":
+        print("Popup closed.")
+
+
+
 def open_dir(path):
     fixed_path = fix_platform_path(path)
     print("Trying to open directory path: " + fixed_path)
@@ -40,13 +52,45 @@ def open_dir(path):
         cmds.warning("The following directory doesn't exist: " + fixed_path)
 
 
+def encode_with_ffmpeg(input_file, output_file):
 
+
+    input_file = fix_platform_path(input_file) +"%04d.exr" 
+    output_file = fix_platform_path(output_file) + '.mov'
+
+    cmd = [
+        ffmpeg_path,
+        '-y',
+        '-gamma', '2.2',
+        '-i', input_file,
+        '-r', '25',
+        '-vcodec','libx264',
+        '-pix_fmt','yuv420p',
+        '-crf', '18',
+        output_file
+    ]
+    print (cmd)
+    process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
+    print ('Encoding Started')
+    
+    # Wait for the process to finish and capture its output
+    stdout, stderr = process.communicate()
+
+    # Check the return code to determine if the process completed successfully
+    if process.returncode == 0:
+        print("Process completed successfully!")
+        show_success_popup()
+
+    else:
+        print("Process failed with return code:", process.returncode)
+        show_failed_popup()
 
 
 
 class FFPMPEG_ENCODER_WINDOW(object):
  
     def __init__(self):
+        
         # Window Layout setup
         
         self.window = cmds.window(title = tool_name) 
@@ -82,29 +126,29 @@ class FFPMPEG_ENCODER_WINDOW(object):
 
         file_path = cmds.textFieldButtonGrp(self.file_text_field, q=True, text=True)
         dir_path = os.path.dirname(file_path)
-        file_name = os.path.basename(file_path)
+        full_file_name = os.path.basename(file_path)
+        split_extension = full_file_name.split('.exr')
+        file_name = split_extension[0]
+        clean_file_name = file_name[0:-4]
+        input_dir = dir_path + '/' + clean_file_name
+        movie_file_name = clean_file_name
+        output_dir = dir_path + '/' + movie_file_name
 
 
+        # Let's list the given directory and count how many frames we have
         list_dir = os.listdir(dir_path)
         file_list = []
-        file_count = 0
+        frame_count = 0
         for i in list_dir:
             print i
             file_list.append(i)
-            file_count = file_count + 1
+            frame_count = frame_count + 1
 
+        # Launnch FFmpeg encode:
 
-
-        
-
-
+        encode_with_ffmpeg(input_file = input_dir, output_file=output_dir )
 
         
-        print (file_count)
-        print ('File path = ' + file_path)
-        print ('Dir path =' + dir_path)
-
-
 
 
     def exists(self ):
