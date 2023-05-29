@@ -90,7 +90,7 @@ def encode_with_ffmpeg(input_file, output_file):
 class FFPMPEG_ENCODER_WINDOW(object):
  
     def __init__(self):
-        
+
         # Window Layout setup
         
         self.window = cmds.window(title = tool_name) 
@@ -161,8 +161,10 @@ class FFPMPEG_ENCODER_WINDOW(object):
     def show(self):
         # Show the window
         cmds.showWindow(self.window)
-        
-ffmpeg_encoder_main_window = FFPMPEG_ENCODER_WINDOW()
-ffmpeg_encoder_main_window.show()
+
+
+def show_main_window():
+    ffmpeg_encoder_main_window = FFPMPEG_ENCODER_WINDOW()
+    ffmpeg_encoder_main_window.show()
 
 
