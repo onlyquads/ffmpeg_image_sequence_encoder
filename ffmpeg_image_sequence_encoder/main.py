@@ -24,7 +24,7 @@ class Encoding_Window(QMainWindow):
         layout.addWidget(self.filepath_field)
         
         # Create a browse button
-        browse_button = QPushButton("Browse")
+        browse_button = QPushButton('Browse')
         browse_button.clicked.connect(self.browse_files)
         layout.addWidget(browse_button)
 
@@ -51,7 +51,7 @@ class Encoding_Window(QMainWindow):
         # Open the file browser and filter for .exr files
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.ExistingFile)
-        file_dialog.setNameFilter("EXR files (*.exr)")
+        file_dialog.setNameFilter('EXR files (*.exr)')
         
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()

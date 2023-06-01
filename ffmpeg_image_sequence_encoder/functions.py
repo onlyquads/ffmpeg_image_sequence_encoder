@@ -2,7 +2,6 @@ import os
 import platform
 import subprocess as sp
 
-
 tool_name = 'FFmpeg Image Sequence Encoder'
 
 def get_ffmpeg_path():
@@ -13,9 +12,9 @@ def get_ffmpeg_path():
     if platform.system() == 'Darwin':
         ffmpeg_path = '/opt/homebrew/Cellar/ffmpeg/6.0/bin/ffmpeg'
         return ffmpeg_path
-
-    
-
+    if platform.system() == 'Linux':
+        ffmpeg_path = '/usr/local/bin/ffmpeg'
+        return ffmpeg_path
 
 
 def fix_platform_path(path):
@@ -23,32 +22,32 @@ def fix_platform_path(path):
     if path is None:
         return
 
-    if platform.system() == "Windows":
-        path = path.replace("/", "\\")
+    if platform.system() == 'Windows':
+        path = path.replace('/', '\\')
     else:
-        path = path.replace("\\", "/")
+        path = path.replace('\\', '/')
 
     return path
 
 
 def open_dir(path):
     fixed_path = fix_platform_path(path)
-    print("Trying to open directory path: " + fixed_path)
+    print('Trying to open directory path: ' + fixed_path)
     if os.path.isdir(fixed_path):
-        if platform.system()=="Windows":
+        if platform.system()=='Windows':
         
-            cmd = ["explorer", fixed_path]
+            cmd = ['explorer', fixed_path]
 
-        elif platform.system()=="Darwin":
+        elif platform.system()=='Darwin':
 
-            cmd = ["open", "%s" % fixed_path]
+            cmd = ['open', '%s' % fixed_path]
 
-        elif platform.system()=="Linux":
-            cmd = ["xdg-open", "%s" % fixed_path]
+        elif platform.system()=='Linux':
+            cmd = ['xdg-open', '%s' % fixed_path]
 
         sp.call(cmd)
     else:
-        print("The following directory doesn't exist: " + fixed_path)
+        print('The following directory does not exist: ' + fixed_path)
 
 def get_in_out_files(file_path):
     dir_path = os.path.dirname(file_path)
@@ -67,7 +66,7 @@ def get_in_out_files(file_path):
 def encode_with_ffmpeg(input_file, output_file):
 
 
-    input_file = fix_platform_path(input_file) +"%04d.exr" 
+    input_file = fix_platform_path(input_file) +'%04d.exr'
     output_file = fix_platform_path(output_file) + '.mov'
     ffmpeg_path = fix_platform_path(get_ffmpeg_path())
     cmd = [
@@ -91,7 +90,7 @@ def encode_with_ffmpeg(input_file, output_file):
 
     # Check the return code to determine if the process completed successfully
     if process.returncode == 0:
-        print("Process completed successfully!")
+        print('Process completed successfully!')
         
     else:
-        print("Process failed with return code:", process.returncode)
+        print('Process failed with return code:', process.returncode)
