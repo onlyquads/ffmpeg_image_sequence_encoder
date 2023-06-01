@@ -3,8 +3,20 @@ import platform
 import subprocess as sp
 
 
-ffmpeg_path = '/opt/homebrew/Cellar/ffmpeg/6.0/bin/ffmpeg'
 tool_name = 'FFmpeg Image Sequence Encoder'
+
+def get_ffmpeg_path():
+
+    if platform.system() == 'Windows':
+        ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg'
+        return ffmpeg_path
+    if platform.system() == 'Darwin':
+        ffmpeg_path = '/opt/homebrew/Cellar/ffmpeg/6.0/bin/ffmpeg'
+        return ffmpeg_path
+
+    
+
+
 
 def fix_platform_path(path):
 
@@ -57,7 +69,7 @@ def encode_with_ffmpeg(input_file, output_file):
 
     input_file = fix_platform_path(input_file) +"%04d.exr" 
     output_file = fix_platform_path(output_file) + '.mov'
-
+    ffmpeg_path = fix_platform_path(get_ffmpeg_path())
     cmd = [
         ffmpeg_path,
         '-y',

@@ -15,7 +15,7 @@ class EncodingWindow(QMainWindow):
     def __init__(self):
 
         super(EncodingWindow, self).__init__()
-        self.setWindowTitle("File Browser Example")
+        self.setWindowTitle(functions.tool_name)
         
         # Create a central widget and layout
         central_widget = QWidget()
@@ -42,6 +42,11 @@ class EncodingWindow(QMainWindow):
         encode_button.clicked.connect(self.encode_with_ffmpeg)
         layout.addWidget(encode_button)
 
+        # Create the open directory button
+        open_dir_button = QPushButton('Open Directory')
+        open_dir_button.clicked.connect(self.open_dir)
+        layout.addWidget(open_dir_button)
+
         self.setCentralWidget(central_widget)
         
     def browse_files(self):
@@ -61,7 +66,13 @@ class EncodingWindow(QMainWindow):
         input_file_name, output_file_name = functions.get_in_out_files(file_path)
         print('Start encoding')
         functions.encode_with_ffmpeg(input_file_name, output_file_name)
-        
+    
+    def open_dir(self):
+        file_path = self.filepath_field.text()
+        path = os.path.dirname(file_path)
+        functions.open_dir(path)
+
+
 
 
 
@@ -74,8 +85,6 @@ if __name__ == '__main__':
     else:
         app = QtWidgets.QApplication.instance()
 
-
-    #app = QApplication(sys.argv)
     window = EncodingWindow()
     window.show()
     sys.exit(app.exec_())
