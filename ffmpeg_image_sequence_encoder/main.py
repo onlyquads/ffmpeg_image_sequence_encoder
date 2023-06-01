@@ -9,12 +9,10 @@ import functions
 os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
 
-
-
-class EncodingWindow(QMainWindow):
+class Encoding_Window(QMainWindow):
     def __init__(self):
 
-        super(EncodingWindow, self).__init__()
+        super(Encoding_Window, self).__init__()
         self.setWindowTitle(functions.tool_name)
         
         # Create a central widget and layout
@@ -47,6 +45,9 @@ class EncodingWindow(QMainWindow):
         open_dir_button.clicked.connect(self.open_dir)
         layout.addWidget(open_dir_button)
 
+
+        self._window = None
+
         self.setCentralWidget(central_widget)
         
     def browse_files(self):
@@ -72,11 +73,6 @@ class EncodingWindow(QMainWindow):
         path = os.path.dirname(file_path)
         functions.open_dir(path)
 
-
-
-
-
-
 if __name__ == '__main__':
     
     
@@ -85,8 +81,11 @@ if __name__ == '__main__':
     else:
         app = QtWidgets.QApplication.instance()
 
-    window = EncodingWindow()
+    window = Encoding_Window()
     window.show()
     app.exec_()
     
 
+def show(self):
+    window = Encoding_Window()
+    window.show()
