@@ -1,4 +1,4 @@
-# ffmpeg_maya_encoder
+# ffmpeg_image_sequence_encoder
  
 ## Installation
 Copy the folder into your maya/script directory and run these with python:
