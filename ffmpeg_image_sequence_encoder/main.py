@@ -45,9 +45,6 @@ class Encoding_Window(QMainWindow):
         open_dir_button.clicked.connect(self.open_dir)
         layout.addWidget(open_dir_button)
 
-
-        self._window = None
-
         self.setCentralWidget(central_widget)
         
     def browse_files(self):
