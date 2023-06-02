@@ -2,7 +2,7 @@
 import os 
 import sys
 from PySide2 import QtWidgets
-from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QFrame
+from PySide2.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QFrame
 import functions
 
 ### FOR MAC OS WE NEED THIS LINE FOR PYTHON 2.7
@@ -72,7 +72,6 @@ class Encoding_Window(QMainWindow):
 
 if __name__ == '__main__':
     
-    
     if not QtWidgets.QApplication.instance():
         app = QtWidgets.QApplication(sys.argv)
     else:
@@ -83,6 +82,6 @@ if __name__ == '__main__':
     app.exec_()
     
 
-def show(self):
+def show():
     window = Encoding_Window()
     window.show()
