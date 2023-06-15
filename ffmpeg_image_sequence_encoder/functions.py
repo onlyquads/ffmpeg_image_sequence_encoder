@@ -81,7 +81,7 @@ def encode_with_ffmpeg(input_file, output_file):
         '-crf', '18',
         output_file
     ]
-    print (cmd)
+    
     process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
     
     print ('Encoding Started')
