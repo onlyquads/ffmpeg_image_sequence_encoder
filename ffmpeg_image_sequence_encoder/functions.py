@@ -6,6 +6,7 @@ tool_name = 'FFmpeg Image Sequence Encoder'
 
 def get_ffmpeg_path():
 
+    # MAKE SURE FFMPEG PATH IS SETUP CORRECTLY FOR YOUR PLATFORM HERE
     if platform.system() == 'Windows':
         ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg'
         return ffmpeg_path
