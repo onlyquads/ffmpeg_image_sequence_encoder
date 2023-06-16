@@ -1,4 +1,4 @@
-# ffmpeg_image_sequence_encoder
+# ffmpeg image sequence encoder
  
 
 ##  What it does:
@@ -8,7 +8,10 @@ It works as standalone app or directly inside maya.
 Just select any .exr file from a sequence and hit encode.
 The output file will be saved into the same directory as the .exr sequence file.
 
-![alt text](https://garcia-nicolas.com/wp-content/uploads/2023/06/encoder_script.png)
+![alt text](https://garcia-nicolas.com/wp-content/uploads/2023/06/encoder_script-e1686951811529.png)
+
+
+*Currently only supports .exr sequences.*
 
 ## Standalone:
 Copy the 'ffmpeg_image_sequence_encoder' folder wherever you want.

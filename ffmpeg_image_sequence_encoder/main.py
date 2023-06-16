@@ -51,7 +51,7 @@ class Encoding_Window(QMainWindow):
         # Open the file browser and filter for .exr files
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.ExistingFile)
-        file_dialog.setNameFilter('EXR files (*.exr)')
+        file_dialog.setNameFilter('EXR Sequence (*.exr)')
         
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
