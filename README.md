@@ -13,7 +13,7 @@ The output file will be saved into the same directory as the .exr sequence file.
 
 *Currently only supports .exr sequences.*
 
-## Standalone:
+## Standalone Installation:
 Copy the 'ffmpeg_image_sequence_encoder' folder wherever you want.
 You want to make sure to tweak the path to your ffmpeg installation inside the 'functions.py' file.
 
