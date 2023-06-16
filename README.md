@@ -8,16 +8,17 @@ It works as standalone app or directly inside maya.
 Just select any .exr file from a sequence and hit encode.
 The output file will be saved into the same directory as the .exr sequence file.
 
+![alt text](https://garcia-nicolas.com/wp-content/uploads/2023/06/encoder_script.png)
 
 ## Standalone:
-Copye the ffmpeg_image_sequence_encoder wherever you want.
+Copy the 'ffmpeg_image_sequence_encoder' folder wherever you want.
 You want to make sure to tweak the path to your ffmpeg installation inside the 'functions.py' file.
 
 Then launch the main.py with a python launcher.
 
 
 ## Maya Installation:
-Copy the folder into your maya/script directory and run these with python:
+Copy the 'ffmpeg_image_sequence_encoder' folder into your maya/script directory and run these with python:
 
 You'll probably have to tweak the path to your ffmpeg installation inside the 'functions.py' file.
 Save the file and relaunch Maya if needed.
