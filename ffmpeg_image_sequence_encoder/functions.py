@@ -6,13 +6,18 @@ tool_name = 'FFmpeg Image Sequence Encoder'
 
 def get_ffmpeg_path():
 
-    # MAKE SURE FFMPEG PATH IS SETUP CORRECTLY FOR YOUR PLATFORM HERE
+    # MAKE SURE FFMPEG PATH IS SETUP CORRECTLY FOR YOUR PLATFORM HERE:
+
+    # WINDOWS
     if platform.system() == 'Windows':
         ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg'
         return ffmpeg_path
+    # MAC OS
     if platform.system() == 'Darwin':
         ffmpeg_path = '/opt/homebrew/Cellar/ffmpeg/6.0/bin/ffmpeg'
         return ffmpeg_path
+    
+    # LINUX
     if platform.system() == 'Linux':
         ffmpeg_path = '/usr/local/bin/ffmpeg'
         return ffmpeg_path
@@ -49,6 +54,7 @@ def open_dir(path):
         sp.call(cmd)
     else:
         print('The following directory does not exist: ' + fixed_path)
+
 
 def get_in_out_files(file_path):
     dir_path = os.path.dirname(file_path)
