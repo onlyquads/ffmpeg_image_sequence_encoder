@@ -26,7 +26,6 @@ def fix_platform_path(path):
 
     if path is None:
         return
-
     if platform.system() == 'Windows':
         path = path.replace('/', '\\')
     else:
@@ -49,7 +48,6 @@ def open_dir(path):
 
         elif platform.system()=='Linux':
             cmd = ['xdg-open', '%s' % fixed_path]
-
         sp.call(cmd)
     else:
         print('The following directory does not exist: ' + fixed_path)
@@ -71,12 +69,11 @@ def get_in_out_files(file_path):
 
 def encode_with_ffmpeg(input_file, output_file, file_extension, fps_value):
 
-
     input_file = fix_platform_path(input_file) +'%04d'+file_extension
     output_file = fix_platform_path(output_file) + '.mov'
     ffmpeg_path = fix_platform_path(get_ffmpeg_path())
 
-    ### Note : THE CRF FLAG IS FOR QUALITY CONSTANT QUALITY, FROM  0 TO 63
+    ### THE CRF FLAG IS FOR QUALITY CONSTANT QUALITY, FROM  0 TO 63
     if file_extension == '.exr':    
         cmd = [
             ffmpeg_path,
@@ -115,5 +112,4 @@ def encode_with_ffmpeg(input_file, output_file, file_extension, fps_value):
         
     else:
         print('Process failed with return code:', process.returncode)
-        #print (stdout)
-        #print (stderr)
+

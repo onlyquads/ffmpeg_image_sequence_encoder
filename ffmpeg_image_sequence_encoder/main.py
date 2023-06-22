@@ -34,22 +34,19 @@ class Encoding_Window(QMainWindow):
         separator_line.setFrameShadow(QFrame.Sunken)
         layout.addWidget(separator_line)
 
-
-        # Create a horizontal layout for FPS spinBox and Label
-
+        # Create a horizontal layout for Label and FPS spinBox
         fps_layout = QHBoxLayout()
-        # Create a spinbox to set FPS
+
+        # Create a label for the FPS spinBox
         fps_label = QLabel('Set FPS')
         fps_layout.addWidget(fps_label)
 
+        # Create a spinbox to set FPS
         self.fps_spinbox = QSpinBox()
         self.fps_spinbox.setMinimum(1)
         self.fps_spinbox.setValue(24)
         fps_layout.addWidget(self.fps_spinbox)
-
         layout.addLayout(fps_layout)
-
-
 
         # Create the encode button
         encode_button = QPushButton('Encode')
@@ -64,7 +61,7 @@ class Encoding_Window(QMainWindow):
         self.setCentralWidget(central_widget)
         
     def browse_files(self):
-        # Open the file browser and filter for .exr files
+        # Open the file browser and filter for supported image files
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.ExistingFile)
         file_dialog.setNameFilter('EXR Sequence (*.exr *.jpg *.jpeg *.tiff *.png)')
@@ -80,7 +77,7 @@ class Encoding_Window(QMainWindow):
         file_path = self.filepath_field.text()
         # Get the input name formated with %04d and the output file
         input_file_name, output_file_name, file_extension = functions.get_in_out_files(file_path)
-        print('Start encoding')
+        # Start the encoding process
         functions.encode_with_ffmpeg(input_file_name, output_file_name, file_extension, fps_value)
     
     def open_dir(self):
