@@ -11,6 +11,7 @@ The output file will be saved into the same directory as the .exr sequence file.
 ![standalone version](https://garcia-nicolas.com/wp-content/uploads/2023/06/encoder_script-e1687466584746.png)
 
 *Currently only supports .exr sequences.*
+*EDIT - Now also supports .jpg, .jpeg, .tiff and .png image sequences.*
 
 ## Standalone Installation:
 Copy the 'ffmpeg_image_sequence_encoder' folder wherever you want.
