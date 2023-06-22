@@ -2,7 +2,7 @@
 import os 
 import sys
 from PySide2 import QtWidgets
-from PySide2.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QFrame
+from PySide2.QtWidgets import QMainWindow, QWidget, QVBoxLayout,QLabel, QHBoxLayout, QLineEdit, QPushButton, QFileDialog, QFrame, QSpinBox
 import functions
 
 ### FOR MAC OS WE NEED THIS LINE FOR PYTHON 2.7
@@ -29,11 +29,27 @@ class Encoding_Window(QMainWindow):
         layout.addWidget(browse_button)
 
         # Create a separator
-
         separator_line = QFrame()
         separator_line.setFrameShape(QFrame.HLine)
         separator_line.setFrameShadow(QFrame.Sunken)
         layout.addWidget(separator_line)
+
+
+        # Create a horizontal layout for FPS spinBox and Label
+
+        fps_layout = QHBoxLayout()
+        # Create a spinbox to set FPS
+        fps_label = QLabel('Set FPS')
+        fps_layout.addWidget(fps_label)
+
+        self.fps_spinbox = QSpinBox()
+        self.fps_spinbox.setMinimum(1)
+        self.fps_spinbox.setValue(24)
+        fps_layout.addWidget(self.fps_spinbox)
+
+        layout.addLayout(fps_layout)
+
+
 
         # Create the encode button
         encode_button = QPushButton('Encode')
@@ -51,19 +67,21 @@ class Encoding_Window(QMainWindow):
         # Open the file browser and filter for .exr files
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.ExistingFile)
-        file_dialog.setNameFilter('EXR Sequence (*.exr)')
+        file_dialog.setNameFilter('EXR Sequence (*.exr *.jpg *.jpeg *.tiff *.png)')
         
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
             self.filepath_field.setText(selected_files[0])
 
     def encode_with_ffmpeg(self):
+        # Get specified FPS
+        fps_value = self.fps_spinbox.text()
         # Get the file path
         file_path = self.filepath_field.text()
         # Get the input name formated with %04d and the output file
-        input_file_name, output_file_name = functions.get_in_out_files(file_path)
+        input_file_name, output_file_name, file_extension = functions.get_in_out_files(file_path)
         print('Start encoding')
-        functions.encode_with_ffmpeg(input_file_name, output_file_name)
+        functions.encode_with_ffmpeg(input_file_name, output_file_name, file_extension, fps_value)
     
     def open_dir(self):
         file_path = self.filepath_field.text()

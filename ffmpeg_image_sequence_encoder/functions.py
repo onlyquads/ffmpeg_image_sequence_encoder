@@ -16,7 +16,6 @@ def get_ffmpeg_path():
     if platform.system() == 'Darwin':
         ffmpeg_path = '/opt/homebrew/Cellar/ffmpeg/6.0/bin/ffmpeg'
         return ffmpeg_path
-    
     # LINUX
     if platform.system() == 'Linux':
         ffmpeg_path = '/usr/local/bin/ffmpeg'
@@ -59,34 +58,49 @@ def open_dir(path):
 def get_in_out_files(file_path):
     dir_path = os.path.dirname(file_path)
     full_file_name = os.path.basename(file_path)
-    split_extension = full_file_name.split('.exr')
-    file_name = split_extension[0]
+    base_file_name, file_extension  = os.path.splitext(full_file_name)
+    file_name = base_file_name
     clean_file_name = file_name[0:-4]
     input_file_name = dir_path + '/' + clean_file_name
     movie_file_name = clean_file_name
     output_file_name = dir_path + '/' + movie_file_name
 
-    return input_file_name, output_file_name
+    return input_file_name, output_file_name, file_extension
 
 
 
-def encode_with_ffmpeg(input_file, output_file):
+def encode_with_ffmpeg(input_file, output_file, file_extension, fps_value):
 
 
-    input_file = fix_platform_path(input_file) +'%04d.exr'
+    input_file = fix_platform_path(input_file) +'%04d'+file_extension
     output_file = fix_platform_path(output_file) + '.mov'
     ffmpeg_path = fix_platform_path(get_ffmpeg_path())
-    cmd = [
-        ffmpeg_path,
-        '-y',
-        '-gamma', '2.2',
-        '-i', input_file,
-        '-r', '25',
-        '-vcodec','libx264',
-        '-pix_fmt','yuv420p',
-        '-crf', '18',
-        output_file
-    ]
+
+    ### Note : THE CRF FLAG IS FOR QUALITY CONSTANT QUALITY, FROM  0 TO 63
+    if file_extension == '.exr':    
+        cmd = [
+            ffmpeg_path,
+            '-y',
+            '-gamma', '2.2',
+            '-i', input_file,
+            '-r', fps_value,
+            '-vcodec','libx264',
+            '-pix_fmt','yuv420p',
+            '-crf', '18',
+            output_file
+        ]
+
+    else: 
+        cmd = [
+            ffmpeg_path,
+            '-y',
+            '-i', input_file,
+            '-r', fps_value,
+            '-vcodec','libx264',
+            '-pix_fmt','yuv420p',
+            '-crf', '18',
+            output_file
+        ]
     
     process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
     
@@ -101,3 +115,5 @@ def encode_with_ffmpeg(input_file, output_file):
         
     else:
         print('Process failed with return code:', process.returncode)
+        #print (stdout)
+        #print (stderr)
