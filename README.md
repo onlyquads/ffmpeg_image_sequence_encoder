@@ -8,7 +8,7 @@ It works as standalone app or directly inside maya.
 Just select any .exr file from a sequence and hit encode.
 The output file will be saved into the same directory as the .exr sequence file.
 
-![standalone version](https://garcia-nicolas.com/wp-content/uploads/2023/06/encoder_script-e1686951811529.png)
+![standalone version](https://garcia-nicolas.com/wp-content/uploads/2023/06/encoder_script-e1687466584746.png)
 
 *Currently only supports .exr sequences.*
 
