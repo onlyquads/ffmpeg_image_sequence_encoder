@@ -41,7 +41,7 @@ Then launch the main.py with a python launcher.
 ## Maya Installation:
 Copy the 'ffmpeg_image_sequence_encoder' folder into your maya/script directory and run these with python:
 
-You'll probably have to tweak the path to your ffmpeg installation inside the 'functions.py' file.
+You'll probably have to tweak the path to your ffmpeg installation inside the 'functions.py', see the Standalone installation point just above.
 Save the file and relaunch Maya if needed.
 
 ```bash
