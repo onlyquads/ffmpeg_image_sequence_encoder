@@ -22,20 +22,8 @@ def get_ffmpeg_path():
         return ffmpeg_path
 
 
-def fix_platform_path(path):
-
-    if path is None:
-        return
-    if platform.system() == 'Windows':
-        path = path.replace('/', '\\')
-    else:
-        path = path.replace('\\', '/')
-
-    return path
-
-
 def open_dir(path):
-    fixed_path = fix_platform_path(path)
+    fixed_path = os.path.normpath(path)
     print('Trying to open directory path: ' + fixed_path)
     if os.path.isdir(fixed_path):
         if platform.system()=='Windows':
@@ -69,11 +57,11 @@ def get_in_out_files(file_path):
 
 def encode_with_ffmpeg(input_file, output_file, file_extension, fps_value):
 
-    input_file = fix_platform_path(input_file) +'%04d'+file_extension
-    output_file = fix_platform_path(output_file) + '.mov'
-    ffmpeg_path = fix_platform_path(get_ffmpeg_path())
+    input_file = os.path.normpath(input_file) +'%04d'+file_extension
+    output_file = os.path.normpath(output_file) + '.mov'
+    ffmpeg_path = os.path.normpath(get_ffmpeg_path())
 
-    ### THE CRF FLAG IS FOR QUALITY CONSTANT QUALITY, FROM  0 TO 63
+    ### THE CRF FLAG IS FOR QUALITY CONSTANT, FROM  0 TO 63
     if file_extension == '.exr':    
         cmd = [
             ffmpeg_path,
