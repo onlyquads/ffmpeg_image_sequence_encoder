@@ -1,5 +1,6 @@
 import sys
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtWidgets
+
 
 class FFMpegFileDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -35,6 +36,7 @@ class FFMpegFileDialog(QtWidgets.QDialog):
             selected_file = file_dialog.selectedFiles()[0]
             self.path_line_edit.setText(selected_file)
 
+
 def get_ffmpeg_path(parent=None):
     dialog = FFMpegFileDialog(parent)
     if dialog.exec_() == QtWidgets.QDialog.Accepted:
@@ -42,11 +44,12 @@ def get_ffmpeg_path(parent=None):
     else:
         return None
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     ffmpeg_path = get_ffmpeg_path()
     if ffmpeg_path:
-        print(f"Selected FFmpeg path: {ffmpeg_path}")
+        print("Selected FFmpeg path: {ffmpeg_path}")
     else:
         print("No file selected.")
     sys.exit(app.exec_())

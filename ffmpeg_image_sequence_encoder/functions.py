@@ -2,7 +2,6 @@ import os
 import platform
 import subprocess as sp
 import json
-import main
 
 TOOL_NAME = 'FFmpeg Image Sequence Encoder'
 
@@ -52,29 +51,9 @@ def get_ffmpeg_path_pref():
     ffmpeg_path = os.path.normpath(read_pref_file('ffmpeg_path'))
     if os.path.isfile(ffmpeg_path) is True:
         return ffmpeg_path
-    
+
     print('FFmpeg path was not found!')
     return
-
-
-
-
-
-def get_ffmpeg_path():
-
-    # MAKE SURE FFMPEG PATH IS SETUP CORRECTLY FOR YOUR PLATFORM HERE:
-    # WINDOWS
-    if platform.system() == 'Windows':
-        ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg'
-        return ffmpeg_path
-    # MAC OS
-    if platform.system() == 'Darwin':
-        ffmpeg_path = '/opt/homebrew/Cellar/ffmpeg/6.0/bin/ffmpeg'
-        return ffmpeg_path
-    # LINUX
-    if platform.system() == 'Linux':
-        ffmpeg_path = '/usr/local/bin/ffmpeg'
-        return ffmpeg_path
 
 
 def open_dir(path):

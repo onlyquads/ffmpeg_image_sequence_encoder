@@ -1,10 +1,10 @@
 import os
 import sys
 import platform
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtWidgets
 from PySide2.QtWidgets import (
     QMainWindow, QMessageBox, QVBoxLayout, QLabel, QHBoxLayout, QLineEdit,
-    QPushButton, QFileDialog, QFrame, QSpinBox, QMenu, QAction)
+    QPushButton, QFileDialog, QFrame, QSpinBox, QAction)
 import functions
 
 # FOR MAC OS WE NEED THIS LINE FOR PYTHON 2.7
@@ -68,7 +68,6 @@ class Encoding_Window(QMainWindow):
         self.setCentralWidget(central_widget)
         central_widget.setLayout(layout)
 
-
     def load_menubar(self):
         # Add a menu bar
         menu_bar = self.menuBar()
@@ -126,15 +125,18 @@ class Encoding_Window(QMainWindow):
         self.popup_ffmpeg_path()
 
     def popup_ffmpeg_path(self):
+        ffmpeg_pref_path = functions.read_pref_file('ffmpeg_path')
+        if ffmpeg_pref_path == '' or ffmpeg_pref_path is None:
+            ffmpeg_pref_path = 'Not Set!'
         message_box = QMessageBox(self)
         message_box.setIcon(QMessageBox.Information)
         message_box.setWindowTitle("Browse to FFmpeg")
-        message_box.setText("Selected FFmpeg executable")
+        message_box.setText("Current FFmpeg executable <p>"+ffmpeg_pref_path)
         browse_button = QPushButton("Browse")
         message_box.addButton(browse_button, QMessageBox.AcceptRole)
         message_box.setStandardButtons(QMessageBox.Cancel)
 
-        result = message_box.exec_()
+        message_box.exec_()
 
         if message_box.clickedButton() == browse_button:
             ffmpeg_path = self.browse_to_ffmpeg()
@@ -155,8 +157,8 @@ class Encoding_Window(QMainWindow):
             if ffmpeg_path:
                 return ffmpeg_path
         else:
-            QMessageBox.warning(self, "Warning", "No FFmpeg executable selected.")
-
+            QMessageBox.warning(
+                self, "Warning", "No FFmpeg executable selected.")
 
 
 if __name__ == '__main__':
