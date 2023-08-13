@@ -1,14 +1,68 @@
 import os
 import platform
 import subprocess as sp
+import json
+import main
 
-tool_name = 'FFmpeg Image Sequence Encoder'
+TOOL_NAME = 'FFmpeg Image Sequence Encoder'
+
+
+def write_pref_file(ffmpeg_path=''):
+
+    # Prefs to save : Source Dir Path, Output Dir Path, Checkbox State
+    preferences = {
+        "ffmpeg_path": ffmpeg_path,
+    }
+
+    # Get the directory path where the script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Define the path for the JSON file
+    json_file_path = os.path.join(script_dir, "preferences.json")
+
+    # Write the preferences data to the JSON file
+    with open(json_file_path, "w") as json_file:
+        json.dump(preferences, json_file, indent=4)
+
+    print("Preferences saved to:", json_file_path)
+
+
+def read_pref_file(preference):
+
+    # Get the directory path where the script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Define the path for the JSON file
+    json_file_path = os.path.join(script_dir, "preferences.json")
+
+    user_pref = None
+
+    if os.path.exists(json_file_path) is True:
+        # Read the JSON data from the file
+        f = open(json_file_path)
+        preferences = json.load(f)
+
+        user_pref = preferences[str(preference)]
+        return user_pref
+
+    return user_pref
+
+
+def get_ffmpeg_path_pref():
+    ffmpeg_path = os.path.normpath(read_pref_file('ffmpeg_path'))
+    if os.path.isfile(ffmpeg_path) is True:
+        return ffmpeg_path
+    
+    print('FFmpeg path was not found!')
+    return
+
+
+
 
 
 def get_ffmpeg_path():
 
     # MAKE SURE FFMPEG PATH IS SETUP CORRECTLY FOR YOUR PLATFORM HERE:
-
     # WINDOWS
     if platform.system() == 'Windows':
         ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg'
@@ -59,7 +113,8 @@ def encode_with_ffmpeg(input_file, output_file, file_extension, fps_value):
 
     input_file = os.path.normpath(input_file) + '%04d' + file_extension
     output_file = os.path.normpath(output_file) + '.mov'
-    ffmpeg_path = os.path.normpath(get_ffmpeg_path())
+    ffmpeg_path = get_ffmpeg_path_pref()
+    print(ffmpeg_path)
 
     # THE CRF FLAG IS FOR QUALITY CONSTANT, FROM  0 TO 63
     if file_extension == '.exr':

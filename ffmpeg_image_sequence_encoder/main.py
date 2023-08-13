@@ -1,9 +1,10 @@
 import os
 import sys
-from PySide2 import QtWidgets
+import platform
+from PySide2 import QtWidgets, QtGui
 from PySide2.QtWidgets import (
-    QMainWindow, QWidget, QVBoxLayout, QLabel, QHBoxLayout, QLineEdit,
-    QPushButton, QFileDialog, QFrame, QSpinBox)
+    QMainWindow, QMessageBox, QVBoxLayout, QLabel, QHBoxLayout, QLineEdit,
+    QPushButton, QFileDialog, QFrame, QSpinBox, QMenu, QAction)
 import functions
 
 # FOR MAC OS WE NEED THIS LINE FOR PYTHON 2.7
@@ -14,12 +15,17 @@ class Encoding_Window(QMainWindow):
     def __init__(self):
 
         super(Encoding_Window, self).__init__()
-        self.setWindowTitle(functions.tool_name)
+        self.setWindowTitle(functions.TOOL_NAME)
+
+        self.load_ui()
+        self.load_menubar()
+
+    def load_ui(self):
 
         # Create a central widget and layout
-        central_widget = QWidget()
-        layout = QVBoxLayout(central_widget)
+        central_widget = QtWidgets.QWidget(self)
 
+        layout = QVBoxLayout(central_widget)
         # Create a text field for the file path
         self.filepath_field = QLineEdit()
         layout.addWidget(self.filepath_field)
@@ -60,6 +66,34 @@ class Encoding_Window(QMainWindow):
         layout.addWidget(open_dir_button)
 
         self.setCentralWidget(central_widget)
+        central_widget.setLayout(layout)
+
+
+    def load_menubar(self):
+        # Add a menu bar
+        menu_bar = self.menuBar()
+
+        # MAC OS Struggle to display the menubar
+        # so we disable the native support here
+        if platform.system() == 'Darwin':
+            menu_bar.setNativeMenuBar(False)
+
+        # Create a file menu
+        file_menu = menu_bar.addMenu('File')
+
+        # Create actions for the file menu
+        set_ffmpeg_path = QAction('Set ffmpeg path', self)
+        exit_action = QAction('Exit', self)
+
+        # Add the actions to the file menu
+        file_menu.addAction(set_ffmpeg_path)
+        file_menu.addAction(exit_action)
+
+        set_ffmpeg_path.triggered.connect(self.set_ffmpeg_path)
+        exit_action.triggered.connect(self.close)
+
+        # Set the menu bar to the main window
+        self.setMenuBar(menu_bar)
 
     def browse_files(self):
         # Open the file browser and filter for supported image files
@@ -87,6 +121,42 @@ class Encoding_Window(QMainWindow):
         file_path = self.filepath_field.text()
         path = os.path.dirname(file_path)
         functions.open_dir(path)
+
+    def set_ffmpeg_path(self):
+        self.popup_ffmpeg_path()
+
+    def popup_ffmpeg_path(self):
+        message_box = QMessageBox(self)
+        message_box.setIcon(QMessageBox.Information)
+        message_box.setWindowTitle("Browse to FFmpeg")
+        message_box.setText("Selected FFmpeg executable")
+        browse_button = QPushButton("Browse")
+        message_box.addButton(browse_button, QMessageBox.AcceptRole)
+        message_box.setStandardButtons(QMessageBox.Cancel)
+
+        result = message_box.exec_()
+
+        if message_box.clickedButton() == browse_button:
+            ffmpeg_path = self.browse_to_ffmpeg()
+            print("FFmpeg path confirmed:", ffmpeg_path)
+            functions.write_pref_file(ffmpeg_path)
+        else:
+            print("FFmpeg path selection cancelled.")
+
+    def browse_to_ffmpeg(self):
+        file_dialog = QFileDialog()
+        file_dialog.setFileMode(QFileDialog.ExistingFile)
+        # file_dialog.setNameFilter('FFmpeg Executable (*.exe)')
+
+        if file_dialog.exec_():
+            selected_files = file_dialog.selectedFiles()
+            ffmpeg_path = selected_files[0]
+
+            if ffmpeg_path:
+                return ffmpeg_path
+        else:
+            QMessageBox.warning(self, "Warning", "No FFmpeg executable selected.")
+
 
 
 if __name__ == '__main__':
