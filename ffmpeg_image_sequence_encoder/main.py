@@ -74,8 +74,7 @@ class Encoding_Window(QMainWindow):
 
         # MAC OS Struggle to display the menubar
         # so we disable the native support here
-        if platform.system() == 'Darwin':
-            menu_bar.setNativeMenuBar(False)
+        menu_bar.setNativeMenuBar(platform.system() != 'Darwin')
 
         # Create a file menu
         file_menu = menu_bar.addMenu('File')
