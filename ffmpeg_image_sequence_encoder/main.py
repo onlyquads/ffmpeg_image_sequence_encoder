@@ -11,10 +11,10 @@ import functions
 os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
 
-class Encoding_Window(QMainWindow):
+class EncodingWindow(QMainWindow):
     def __init__(self):
 
-        super(Encoding_Window, self).__init__()
+        super(EncodingWindow, self).__init__()
         self.setWindowTitle(functions.TOOL_NAME)
 
         self.load_ui()
@@ -167,11 +167,11 @@ if __name__ == '__main__':
     else:
         app = QtWidgets.QApplication.instance()
 
-    window = Encoding_Window()
+    window = EncodingWindow()
     window.show()
     app.exec_()
 
 
 def show():
-    window = Encoding_Window()
+    window = EncodingWindow()
     window.show()
