@@ -22,7 +22,7 @@ Make sure you setup ffmpeg path in file -> set ffmpeg path
 ## Maya Installation:
 Copy the 'ffmpeg_image_sequence_encoder' folder into your maya/script directory and run these with python:
 
-```bash
+```python
 from ffmpeg_image_sequence_encoder import main
 window = main.Encoding_Window()
 window.show()
