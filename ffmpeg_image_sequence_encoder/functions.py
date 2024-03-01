@@ -2,8 +2,11 @@ import os
 import platform
 import subprocess as sp
 import json
+import re
 
-TOOL_NAME = 'FFmpeg Image Sequence Encoder'
+TOOL_NAME = "FFmpeg Image Sequence Encoder"
+
+PREF_FILENAME = "preferences.json"
 
 
 def write_pref_file(ffmpeg_path=''):
@@ -17,7 +20,7 @@ def write_pref_file(ffmpeg_path=''):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Define the path for the JSON file
-    json_file_path = os.path.join(script_dir, "preferences.json")
+    json_file_path = os.path.join(script_dir, PREF_FILENAME)
 
     # Write the preferences data to the JSON file
     with open(json_file_path, "w") as json_file:
@@ -32,14 +35,14 @@ def read_pref_file(preference):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Define the path for the JSON file
-    json_file_path = os.path.join(script_dir, "preferences.json")
+    json_file_path = os.path.join(script_dir, PREF_FILENAME)
 
     user_pref = None
 
     if os.path.exists(json_file_path) is True:
         # Read the JSON data from the file
-        f = open(json_file_path)
-        preferences = json.load(f)
+        file = open(json_file_path)
+        preferences = json.load(file)
 
         user_pref = preferences[str(preference)]
         return user_pref
@@ -79,11 +82,16 @@ def get_in_out_files(file_path):
     dir_path = os.path.dirname(file_path)
     full_file_name = os.path.basename(file_path)
     base_file_name, file_extension = os.path.splitext(full_file_name)
-    file_name = base_file_name
-    clean_file_name = file_name[0:-4]
-    input_file_name = dir_path + '/' + clean_file_name
-    movie_file_name = clean_file_name
-    output_file_name = dir_path + '/' + movie_file_name
+
+    # Extract the numeric part from the end of the file name
+    numeric_part = re.search(r'\d+$', base_file_name)
+    num_digits = len(numeric_part)
+
+    # Remove the numeric part from the file name
+    clean_file_name = base_file_name[:-num_digits]
+
+    input_file_name = os.path.join(dir_path, clean_file_name)
+    output_file_name = os.path.join(dir_path, clean_file_name)
 
     return input_file_name, output_file_name, file_extension
 
@@ -123,7 +131,7 @@ def encode_with_ffmpeg(input_file, output_file, file_extension, fps_value):
 
     process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
 
-    print ('Encoding Started')
+    print('Encoding Started')
 
     # Wait for the process to finish and capture its output
     stdout, stderr = process.communicate()
